@@ -1,12 +1,8 @@
-# Proyecto N · [bigdata-p1-itaca]
-
-> **Plantilla.** Sustituye todo lo que va entre corchetes y borra las indicaciones en cursiva a medida que completes cada sección. Borra también las secciones de bloques que tu proyecto no trabaje.
+# Proyecto 4 · Big Data urbano (Valencia)
 
 ## Descripción y objetivo
 
-*Dos o tres líneas: qué problema resuelve el proyecto, con qué datos y qué resultado final se obtiene (dashboard, modelo…).*
-
-[Descripción]
+Objetivo: pipeline completo de ingeniería de datos (batch + streaming) sobre datos abiertos de tráfico, calidad del aire y meteorología de Valencia. Los datos se cruzan con Spark y el proyecto termina con dos modelos predictivos: uno principal de NO₂ horario y uno secundario de intensidad de tráfico.
 
 ## Arquitectura
 
