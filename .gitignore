@@ -1,0 +1,20 @@
+# Datos y credenciales
+data/raw/
+data/*.csv
+data/*.json
+.env
+*.pem
+
+# Entornos Python
+.venv/
+__pycache__/
+*.pyc
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Docker
+docker-volumes/
+
+# MkDocs
+site/
