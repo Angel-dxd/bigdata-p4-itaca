@@ -1,5 +1,6 @@
 # Datos y credenciales
-data/raw/
+data/raw/*
+!data/raw/calidad_aire_valencia_*.json
 data/*.csv
 data/*.json
 .env
