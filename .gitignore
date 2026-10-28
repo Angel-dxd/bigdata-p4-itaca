@@ -19,3 +19,6 @@ docker-volumes/
 
 # MkDocs
 site/
+
+#Logs
+logs/
