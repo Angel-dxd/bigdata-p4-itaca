@@ -47,15 +47,16 @@ Campos que usamos de cada fuente:
 #### Diagrama de la ingesta
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph SRV["Servidor siempre encendido (cron)"]
-        GEO["Geoportal: espiras, tramos,<br/>estado, aire, meteo"] --> REC["recolector.py"]
-        AEM["AEMET 8416"] --> REC
-        REC --> PQ["datos/fuente/fecha=.../*.parquet"]
-        REC --> LOG["_registro/ejecuciones.csv"]
+        REC["recolector.py"] --> GEO["Geoportal: espiras, tramos,<br/>estado, aire, meteo"]
+        REC --> AEM["AEMET 8416"]
+        REC --> PQ[("datos/&lt;fuente&gt;/fecha=.../*.parquet")]
+        REC --> LOG[("_registro/ejecuciones.csv")]
     end
-    PQ -- rsync --> RAW["data/raw en el proyecto"]
-    CKAN["CKAN"] --> HIST["historico_aire.py<br/>carga única"] --> RAW
+    PQ -- rsync --> RAW[("data/raw en el proyecto")]
+    HIST["historico_aire.py<br/>carga única"] -- CKAN --> RAW
+
 ```
 
 #### Programación con cron
@@ -79,6 +80,9 @@ flowchart LR
 - En meteo los nombres de campo vienen recortados (`temperatur`, `humedad_re`).
 - No todas las estaciones miden todos los contaminantes, así que hay nulos.
 - La ficha de espiras aparece en el portal como "temporalmente con errores de procesamiento".
+- La primera ejecución de AEMET falló con `'AEMET_API_KEY'` porque la clave no se había cargado del `.env`; quedó registrado en `ejecuciones.csv` y la siguiente ejecución ya funcionó.
+- Entre el 28/10 a las 18:30 UTC y el 29/10 a las 12:30 UTC no hay capturas: el equipo estuvo apagado y cron no se ejecutó. Por eso el recolector debe ir en un servidor siempre encendido.
+- Cada llamada a AEMET devuelve 13 observaciones, no 24 como se esperaba.
 
 
 #### Comparativa Python vs NiFi

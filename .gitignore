@@ -21,4 +21,4 @@ docker-volumes/
 site/
 
 #Logs
-logs/
+logs/.DS_Store
