@@ -79,19 +79,18 @@ flowchart LR
 - En meteo los nombres de campo vienen recortados (`temperatur`, `humedad_re`).
 - No todas las estaciones miden todos los contaminantes, así que hay nulos.
 - La ficha de espiras aparece en el portal como "temporalmente con errores de procesamiento".
-- AEMET devolvió 13 observaciones en lugar de las 24 esperadas, así que algunas horas no llegan en cada llamada.
-- En el histórico, los dos recursos tienen formatos distintos: `Fecha` con hora (`2020-01-01T00:00:00`) frente a solo fecha (`2021-03-07`), y `Hora` como `0:00:00` o como `4:00`.
-- En el histórico 2021–2022 hay fechas con el día y el mes intercambiados (`Fecha 2021-03-07` con `Dia del mes 3`).
-- El recurso 2021–2022 trae tres columnas más (`Id`, `Fecha creacion`, `Fecha baja`).
-- El cron se ha probado en macOS: allí `flock` no viene instalado (se instala con `brew install flock`) y la ruta del proyecto tiene espacios, así que va entre comillas.
 
 
 #### Comparativa Python vs NiFi
 
+Se ha añadido un UpdateAttribute entre SplitJson y PutFile para dar a cada fichero un nombre con marca de tiempo; sin él, todos los trozos tendrían el mismo nombre.
+
 | Aspecto | Recolector Python | Flujo NiFi |
 |---|---|---|
-| Tiempo de desarrollo | | |
-| Facilidad para depurar un fallo | | |
-| Visibilidad del estado en ejecución | | |
-| Facilidad de versionado en Git | | |
-| Recursos necesarios en el servidor | | |
+| Tiempo de desarrollo | Rápido: añadir una fuente es una línea en `FUENTES` | Más lento: hay que configurar cada procesador y todas sus relaciones a mano |
+| Facilidad para depurar un fallo | El traceback indica la línea exacta y el error queda en `ejecuciones.csv` | Aparece un aviso en el procesador, pero la causa hay que buscarla en el log del contenedor |
+| Visibilidad del estado en ejecución | Solo `cron.log` y `ejecuciones.csv` | Muy buena: contadores, colas y Data Provenance de cada flowfile |
+| Facilidad de versionado en Git | Muy fácil: un `.py` legible en el diff | Un `.json` largo y difícil de leer en el diff |
+| Recursos necesarios en el servidor | Mínimos: Python, `requests` y `pyarrow`; se ejecuta y termina | Altos: Java en Docker siempre encendido |
+
+
